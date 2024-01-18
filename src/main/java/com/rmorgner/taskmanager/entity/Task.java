@@ -37,16 +37,17 @@ public class Task {
   @NotNull
   @Size(max = 50)
   @Column(length = 50)
-  String name;
+  @Builder.Default
+  private String name = "";
 
   @NotNull
-  boolean done;
+  private boolean done;
 
   @CreationTimestamp
-  Instant created;
+  private Instant created;
 
   @NotNull
   @Column(columnDefinition = "smallint")
-  Priority priority;
+  private Priority priority;
 
 }

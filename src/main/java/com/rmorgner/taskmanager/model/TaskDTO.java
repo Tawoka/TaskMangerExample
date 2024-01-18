@@ -13,18 +13,19 @@ import java.util.UUID;
 @Builder
 public class TaskDTO {
 
-  UUID id;
+  private UUID id;
 
   @NotNull
   @NotBlank
-  String name;
+  @Builder.Default
+  private String name = "";
 
   @NotNull
-  boolean done;
+  private boolean done;
 
-  Instant created;
+  private Instant created;
 
   @NotNull
-  Priority priority;
+  private Priority priority;
 
 }

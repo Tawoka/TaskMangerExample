@@ -8,18 +8,25 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class TaskService implements ITaskService {
 
+  private static final TaskDTO EMPTY = TaskDTO.builder().build();
+
   private final TaskRepository taskRepository;
   private final TaskMapper taskMapper;
 
   @Override
   public TaskDTO getTask(UUID id) {
-    return null;
+    Optional<Task> task = taskRepository.findById(id);
+    if (task.isPresent()){
+      return taskMapper.mapEntityToDTO(task.get());
+    }
+    return EMPTY;
   }
 
   @Override

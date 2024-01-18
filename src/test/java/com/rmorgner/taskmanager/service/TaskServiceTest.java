@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.context.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -17,7 +18,16 @@ class TaskServiceTest {
 
   @Test
   void getTask() {
+    List<TaskDTO> allTasks = taskService.getAllTasks();
+    TaskDTO taskDTO = allTasks.get(0);
+    TaskDTO task = taskService.getTask(taskDTO.getId());
+    assertThat(task.getName()).isEqualTo(taskDTO.getName());
+  }
 
+  @Test
+  void getEmptyTask() {
+    TaskDTO task = taskService.getTask(UUID.randomUUID());
+    assertThat(task.getName()).isEmpty();
   }
 
   @Test
