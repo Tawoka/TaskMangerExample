@@ -2,7 +2,9 @@ package com.rmorgner.taskmanager.mapper;
 
 import com.rmorgner.taskmanager.entity.Task;
 import com.rmorgner.taskmanager.model.TaskDTO;
+import org.springframework.stereotype.*;
 
+@Component
 public class TaskMapper implements ITaskMapper {
   @Override
   public TaskDTO mapEntityToDTO(Task task) {

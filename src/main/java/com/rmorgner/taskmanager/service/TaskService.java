@@ -1,14 +1,21 @@
 package com.rmorgner.taskmanager.service;
 
+import com.rmorgner.taskmanager.entity.Task;
+import com.rmorgner.taskmanager.mapper.TaskMapper;
 import com.rmorgner.taskmanager.model.TaskDTO;
+import com.rmorgner.taskmanager.repository.TaskRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class TaskService implements ITaskService {
 
+  private final TaskRepository taskRepository;
+  private final TaskMapper taskMapper;
 
   @Override
   public TaskDTO getTask(UUID id) {
@@ -17,7 +24,10 @@ public class TaskService implements ITaskService {
 
   @Override
   public List<TaskDTO> getAllTasks() {
-    return null;
+    List<Task> allTasks = taskRepository.findAll();
+    return allTasks.stream()
+        .map(taskMapper::mapEntityToDTO)
+        .toList();
   }
 
   @Override
