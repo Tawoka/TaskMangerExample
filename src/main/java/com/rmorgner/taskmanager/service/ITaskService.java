@@ -16,6 +16,6 @@ public interface ITaskService {
 
   void updateTask(UUID id, TaskDTO taskDTO);
 
-  void createTask(TaskDTO taskDTO);
+  TaskDTO createTask(TaskDTO taskDTO);
 
 }

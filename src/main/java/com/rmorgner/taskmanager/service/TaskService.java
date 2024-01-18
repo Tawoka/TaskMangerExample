@@ -39,16 +39,24 @@ public class TaskService implements ITaskService {
 
   @Override
   public void deleteTask(UUID id) {
-
+    taskRepository.deleteById(id);
   }
 
   @Override
   public void updateTask(UUID id, TaskDTO taskDTO) {
-
+    Optional<Task> optionalTask = taskRepository.findById(id);
+    if (optionalTask.isPresent()){
+      Task task = optionalTask.get();
+      task.setDone(taskDTO.isDone());
+      task.setPriority(taskDTO.getPriority());
+      task.setName(taskDTO.getName());
+      taskRepository.save(task);
+    }
   }
 
   @Override
-  public void createTask(TaskDTO taskDTO) {
-
+  public TaskDTO createTask(TaskDTO taskDTO) {
+    Task task = taskRepository.save(taskMapper.mapDTOtoEntity(taskDTO));
+    return taskMapper.mapEntityToDTO(task);
   }
 }
