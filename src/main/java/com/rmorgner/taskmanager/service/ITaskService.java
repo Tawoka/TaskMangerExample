@@ -14,7 +14,7 @@ public interface ITaskService {
 
   void deleteTask(UUID id);
 
-  void updateTask(UUID id, TaskDTO taskDTO);
+  TaskDTO updateTask(UUID id, TaskDTO taskDTO);
 
   TaskDTO createTask(TaskDTO taskDTO);
 

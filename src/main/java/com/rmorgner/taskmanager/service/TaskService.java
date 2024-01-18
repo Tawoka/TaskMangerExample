@@ -43,7 +43,7 @@ public class TaskService implements ITaskService {
   }
 
   @Override
-  public void updateTask(UUID id, TaskDTO taskDTO) {
+  public TaskDTO updateTask(UUID id, TaskDTO taskDTO) {
     Optional<Task> optionalTask = taskRepository.findById(id);
     if (optionalTask.isPresent()){
       Task task = optionalTask.get();
@@ -52,6 +52,11 @@ public class TaskService implements ITaskService {
       task.setName(taskDTO.getName());
       taskRepository.save(task);
     }
+    Optional<Task> result = taskRepository.findById(id);
+
+    return result.isPresent() ?
+        taskMapper.mapEntityToDTO(result.get()) :
+        EMPTY;
   }
 
   @Override

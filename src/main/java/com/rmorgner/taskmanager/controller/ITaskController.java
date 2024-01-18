@@ -8,9 +8,9 @@ import java.util.UUID;
 
 public interface ITaskController {
 
-  ResponseEntity<TaskDTO> getTask(UUID id);
+  TaskDTO getTask(UUID id);
 
-  ResponseEntity<List<TaskDTO>> getAllTasks();
+  List<TaskDTO> getAllTasks();
 
   ResponseEntity<Void> deleteTask(UUID id);
 
