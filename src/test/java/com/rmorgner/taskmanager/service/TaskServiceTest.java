@@ -17,12 +17,13 @@ class TaskServiceTest {
 
   @Test
   void getTask() {
-    List<TaskDTO> allTasks = taskService.getAllTasks();
-    assertThat(allTasks).hasSize(2);
+
   }
 
   @Test
   void getAllTasks() {
+    List<TaskDTO> allTasks = taskService.getAllTasks();
+    assertThat(allTasks).hasSize(2);
   }
 
   @Test
