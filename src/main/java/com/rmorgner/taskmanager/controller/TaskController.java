@@ -46,7 +46,9 @@ public class TaskController implements ITaskController{
   }
 
   @Override
-  public ResponseEntity<Void> updateTask(UUID id, TaskDTO taskDTO) {
+  @RequestMapping(value = ID_PLACEHOLDER, method = RequestMethod.PUT)
+  public ResponseEntity<Void> updateTask(@PathVariable(ID_FIELD) UUID id,
+                                         @RequestBody TaskDTO taskDTO) {
     log.debug("Updating task with id: " + id);
 
     TaskDTO dto = service.updateTask(id, taskDTO);

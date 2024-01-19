@@ -16,6 +16,9 @@ import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.setup.*;
 import org.springframework.web.context.*;
 
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.core.Is.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -70,8 +73,29 @@ class TaskControllerTest {
   }
 
   @Test
-  void updateTask() {
+  void updateTask() throws Exception {
+    Task task = taskRepository.findAll().get(0);
+    TaskDTO taskDTO = taskMapper.mapEntityToDTO(task);
+    taskDTO.setDone(true);
+    taskDTO.setId(null);
+    taskDTO.setCreated(null);
+    final String taskName = "TEST";
+    taskDTO.setName(taskName);
 
+    String json = objectMapper.writeValueAsString(taskDTO);
+
+    mockMvc.perform(put(PLACEHOLDER_API_STRING, task.getId())
+        .content(json)
+        .contentType(MediaType.APPLICATION_JSON)
+    )
+        .andExpect(status().isNoContent());
+
+    mockMvc.perform(get(PLACEHOLDER_API_STRING, task.getId()))
+        .andExpect(jsonPath("$.name", is(taskName)));
+
+    Optional<Task> updatedTask = taskRepository.findById(task.getId());
+    assertThat(updatedTask).isPresent();
+    assertThat(updatedTask.get().getName()).isEqualTo(taskName);
   }
 
   @Test
