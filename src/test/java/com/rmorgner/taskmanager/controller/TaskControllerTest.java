@@ -1,6 +1,7 @@
 package com.rmorgner.taskmanager.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rmorgner.taskmanager.entity.Task;
 import com.rmorgner.taskmanager.mapper.TaskMapper;
 import com.rmorgner.taskmanager.repository.TaskRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,9 +20,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class TaskControllerTest {
 
-  private static final String ID_PLACEHOLDER = "{taskId}";
   private static final String API_STRING = "/api/v1/task";
-  private static final String ID_FIELD = "taskId";
+  static final String PLACEHOLDER_API_STRING = API_STRING + "/{taskId}";
 
   @Autowired
   TaskController taskController;
@@ -50,8 +50,12 @@ class TaskControllerTest {
 
   @Test
   void getTask() throws Exception {
-//    mockMvc.perform(get(API_STRING))
-//        .andExpect(status().isOk());
+    Task task = taskRepository.findAll().get(0);
+
+    mockMvc.perform(get(PLACEHOLDER_API_STRING, task.getId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.name", is(task.getName())))
+    ;
   }
 
   @Test
