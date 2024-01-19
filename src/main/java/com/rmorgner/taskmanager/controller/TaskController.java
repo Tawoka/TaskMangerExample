@@ -31,6 +31,7 @@ public class TaskController implements ITaskController{
   }
 
   @Override
+  @RequestMapping(method = RequestMethod.GET)
   public List<TaskDTO> getAllTasks() {
     log.debug("Requesting all tasks");
 
