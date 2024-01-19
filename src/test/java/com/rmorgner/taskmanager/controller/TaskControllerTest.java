@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.setup.*;
 import org.springframework.web.context.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -116,8 +117,18 @@ class TaskControllerTest {
   }
 
   @Test
-  void deleteTask() {
+  void deleteTask() throws Exception {
+    List<Task> taskList = taskRepository.findAll();
+    int originalListSize = taskList.size();
+    Task task = taskList.get(0);
 
+    mockMvc.perform(delete(PLACEHOLDER_API_STRING, task.getId()))
+        .andExpect(status().isNoContent());
+
+    mockMvc.perform(get(PLACEHOLDER_API_STRING, task.getId()))
+        .andExpect(status().isNotFound());
+
+    assertThat(taskRepository.findAll().size()).isLessThan(originalListSize);
   }
 
 

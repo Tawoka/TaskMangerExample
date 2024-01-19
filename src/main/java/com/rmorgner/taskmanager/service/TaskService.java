@@ -1,5 +1,6 @@
 package com.rmorgner.taskmanager.service;
 
+import com.rmorgner.taskmanager.controller.NotFoundException;
 import com.rmorgner.taskmanager.entity.Task;
 import com.rmorgner.taskmanager.mapper.TaskMapper;
 import com.rmorgner.taskmanager.model.TaskDTO;

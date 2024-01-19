@@ -27,7 +27,11 @@ public class TaskController implements ITaskController{
   public TaskDTO getTask(@PathVariable(ID_FIELD) UUID id) {
     log.debug("Requesting task with id: " + id);
 
-    return service.getTask(id);
+    TaskDTO task = service.getTask(id);
+    if (task.getName().isEmpty()){
+      throw new NotFoundException();
+    }
+    return task;
   }
 
   @Override
@@ -39,8 +43,11 @@ public class TaskController implements ITaskController{
   }
 
   @Override
-  public ResponseEntity<Void> deleteTask(UUID id) {
+  @RequestMapping(value = ID_PLACEHOLDER, method = RequestMethod.DELETE)
+  public ResponseEntity<Void> deleteTask(@PathVariable(ID_FIELD) UUID id) {
     log.debug("Deleting task with id: " + id);
+
+    service.deleteTask(id);
 
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
