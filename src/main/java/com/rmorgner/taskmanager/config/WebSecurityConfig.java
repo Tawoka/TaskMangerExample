@@ -1,6 +1,7 @@
 package com.rmorgner.taskmanager.config;
 
 import org.springframework.context.annotation.*;
+import org.springframework.http.*;
 import org.springframework.security.config.annotation.web.builders.*;
 import org.springframework.security.config.annotation.web.configurers.*;
 import org.springframework.security.web.*;
@@ -11,6 +12,7 @@ public class WebSecurityConfig{
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(AbstractHttpConfigurer::disable);
+    http.cors(AbstractHttpConfigurer::disable);
     return http.build();
   }
 
