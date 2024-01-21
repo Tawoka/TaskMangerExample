@@ -69,6 +69,8 @@ public class TaskController implements ITaskController{
   @Override
   @RequestMapping(method = RequestMethod.POST)
   public ResponseEntity<Void> createTask(@RequestBody TaskDTO taskDTO) {
+    taskDTO.setId(null);
+    taskDTO.setCreated(null);
     TaskDTO task = service.createTask(taskDTO);
 
     HttpHeaders httpHeaders = new HttpHeaders();
