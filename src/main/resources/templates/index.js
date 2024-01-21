@@ -2,6 +2,13 @@ const TASK_API = "http://localhost:8080/api/v1/task";
 
 let taskMap = [];
 
+function buildPage(){
+    axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+    buildTaskList().then((html) => {
+        $("#table").html(html);
+    });
+}
+
 async function buildTaskList() {
 
     taskMap = [];
@@ -16,37 +23,49 @@ async function buildTaskList() {
                 <th scope="col">Name</th>
                 <th scope="col">Priority</th>
                 <th scope="col">Done</th>
+                <th scope="col"></th>
             </tr>
         </thead>
-        </tbody>
+        <tbody>
     `;
 
     for (let task of list) {
         taskMap[task.id] = task;
         let tableClass = getPriorityColorClass(task.priority);
         html += `<tr class="${tableClass}">
-            <td id="${task.id}">
-                <span>${task.name}</span>
-                <button type="button" class="btn btn-outline-primary" style="float: right" 
-                        onclick="switchToEditMode('${task.id}')">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                </button>
-            </td>        
-            <td>
-                <select class="form-select" aria-label="Default select example" onchange="updatePriority('${task.id}', this)">
-                    ${buildPriorityOptions(task.priority)}
-                </select>            
-            </td>        
-            <td>
-                <input class="form-check-input" 
-                    type="checkbox" ${task.done ? "checked" : ""} 
-                    onclick="updateTaskStatus('${task.id}')">
-            </td>
+                <td id="${task.id}">
+                    <span>${task.name}</span>
+                    <button type="button" class="btn btn-outline-primary" style="float: right" 
+                            onclick="switchToEditMode('${task.id}')">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                </td>        
+                <td>
+                    <select class="form-select" aria-label="Default select example" onchange="updatePriority('${task.id}', this)">
+                        ${buildPriorityOptions(task.priority)}
+                    </select>            
+                </td>        
+                <td>
+                    <input class="form-check-input" 
+                        type="checkbox" ${task.done ? "checked" : ""} 
+                        onclick="updateTaskStatus('${task.id}')">
+                </td>
+                <td>
+                    <button type="button" class="btn btn-outline-primary fa-solid fa-trash-can"
+                        onclick="deleteTask('${task.id}')">
+                    </button>
+                </td>
             </tr>        
         `;
     }
 
     html += "</tbody></table>";
+
+    html += `<div style="width: 50%; margin-left: 25%; min-width: 800px">
+        <button type="button" class="btn btn-primary" 
+            style="width: 100%"
+            onclick="createTask()">Add Task</button>
+    </div>`;
 
     return html;
 }
@@ -139,4 +158,24 @@ function updateTaskStatus(id) {
     const task = taskMap[id];
     task.done = !task.done;
     updateTask(task);
+}
+
+function createTask(){
+    const defaultTask = {
+        priority: "NORMAL",
+        name: "New Task",
+        done: false
+    }
+    axios.post(TASK_API, defaultTask)
+        .then(response => {
+            buildPage();
+        })
+    ;
+}
+
+function deleteTask(id){
+    axios.delete(`${TASK_API}/${id}`)
+        .then(response => {
+            buildPage();
+        });
 }

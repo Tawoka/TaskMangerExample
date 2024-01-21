@@ -32,10 +32,7 @@
 </script>
 <script src="index.js" type="application/javascript"></script>
 <script>
-    axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-    buildTaskList().then((html) => {
-        $("#table").html(html);
-    });
+    buildPage();
 </script>
 </body>
 </html>
