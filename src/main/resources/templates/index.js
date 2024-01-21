@@ -9,26 +9,8 @@ function buildPage(){
     });
 }
 
-async function buildTaskList() {
-
-    taskMap = [];
-    const response = await axios.get(TASK_API);
-    const list = response.data;
-
-    console.log(list);
-
-    let html = `<table class="table" style="width: 50%; margin-left: 25%; min-width: 800px" xmlns="http://www.w3.org/1999/html">
-        <thead style="border-bottom: black 1em">
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Priority</th>
-                <th scope="col">Done</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-    `;
-
+function buildTableContent(list) {
+    let html = "";
     for (let task of list) {
         taskMap[task.id] = task;
         let tableClass = getPriorityColorClass(task.priority);
@@ -58,21 +40,46 @@ async function buildTaskList() {
             </tr>        
         `;
     }
+    return html;
+}
 
-    html += "</tbody></table>";
+function initializeTableWithHeader() {
+    return `<table class="table" style="width: 50%; margin-left: 25%; min-width: 800px" xmlns="http://www.w3.org/1999/html">
+        <thead style="border-bottom: black 1em">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Priority</th>
+                <th scope="col">Done</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+    `;
+}
 
-    html += `<div style="width: 50%; margin-left: 25%; min-width: 800px">
+function finalizeTable() {
+    return "</tbody></table>";
+}
+
+function addTaskCreationButton() {
+    return `<div style="width: 50%; margin-left: 25%; min-width: 800px">
         <button type="button" class="btn btn-primary" 
             style="width: 100%"
             onclick="createTask()">Add Task</button>
     </div>`;
+}
 
+async function buildTaskList() {
+    const list = await initializeData();
+    let html = initializeTableWithHeader();
+    html += buildTableContent(list, html);
+    html += finalizeTable();
+    html += addTaskCreationButton();
     return html;
 }
 
-function switchToEditMode(id) {
-    const task = taskMap[id];
-    const html = `
+function buildNameInputField(task, id) {
+    return `
         <div class="input-group mb-3">
             <input type="text" class="form-control" value="${task.name}"/>
             <button type="button" class="btn btn-outline-primary fa-solid fa-check" style="float: right" 
@@ -81,36 +88,41 @@ function switchToEditMode(id) {
                 onclick="undo('${id}')"/>
         </div>
     `;
+}
+
+function switchToEditMode(id) {
+    const task = taskMap[id];
+    const html = buildNameInputField(task, id);
     const elementId = "#" + id;
     $(elementId).html(html);
+}
+
+function buildNameDisplayField(task) {
+    return `
+        <span>${task.name}</span>
+        <button type="button" class="btn btn-outline-primary" style="float: right" 
+                onclick="switchToEditMode('${task.id}')">
+            <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+    `;
+}
+
+function readValueFromInputField(elementId) {
+    return $(elementId + " input").val();
 }
 
 function save(id) {
     const task = taskMap[id];
     const elementId = "#" + id;
-    task.name = $(elementId + " input").val();
+    task.name = readValueFromInputField(elementId);
     updateTask(task);
-
-    const html = `
-        <span>${task.name}</span>
-        <button type="button" class="btn btn-outline-primary" style="float: right" 
-                onclick="switchToEditMode('${task.id}')">
-            <i class="fa-solid fa-pen-to-square"></i>
-        </button>
-    `;
-
+    const html = buildNameDisplayField(task);
     $(elementId).html(html);
 }
 
 function undo(id) {
     const task = taskMap[id];
-    const html = `
-        <span>${task.name}</span>
-        <button type="button" class="btn btn-outline-primary" style="float: right" 
-                onclick="switchToEditMode('${task.id}')">
-            <i class="fa-solid fa-pen-to-square"></i>
-        </button>
-    `;
+    const html = buildNameDisplayField(task);
     const elementId = "#" + id;
     $(elementId).html(html);
 }
@@ -124,18 +136,6 @@ function buildPriorityOptions(taskPriority) {
     return html;
 }
 
-function updatePriority(id, selection) {
-    const elementId = "#" + id;
-    const oldValue = taskMap[id].priority;
-    const newValue = selection.value;
-    $(elementId).parent().removeClass(getPriorityColorClass(oldValue));
-    $(elementId).parent().addClass(getPriorityColorClass(newValue));
-
-    let task = taskMap[id];
-    task.priority = newValue;
-    updateTask(task);
-}
-
 function getPriorityColorClass(priority) {
     switch (priority) {
         case "URGENT":
@@ -147,11 +147,15 @@ function getPriorityColorClass(priority) {
     }
 }
 
-function updateTask(task) {
-    axios.put(`${TASK_API}/${task.id}`, task)
-        .then(response => {
-            taskMap[task.id] = task;
-        });
+function updatePriority(id, selection) {
+    const elementId = "#" + id;
+    const oldValue = taskMap[id].priority;
+    const newValue = selection.value;
+    let task = taskMap[id];
+    task.priority = newValue;
+    updateTask(task);
+    $(elementId).parent().removeClass(getPriorityColorClass(oldValue));
+    $(elementId).parent().addClass(getPriorityColorClass(newValue));
 }
 
 function updateTaskStatus(id) {
@@ -171,6 +175,19 @@ function createTask(){
             buildPage();
         })
     ;
+}
+
+async function initializeData() {
+    taskMap = [];
+    const response = await axios.get(TASK_API);
+    return response.data;
+}
+
+function updateTask(task) {
+    axios.put(`${TASK_API}/${task.id}`, task)
+        .then(response => {
+            taskMap[task.id] = task;
+        });
 }
 
 function deleteTask(id){
