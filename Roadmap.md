@@ -2,9 +2,6 @@
 
 ## Version 1 - Elevate your daily experience with this easy-to-use task manager
 
-- Add database container to project
-- Create executable jar through maven
-- Add configuration options for dynamic parameters like database url
 - Create proper roadmap for future versions 
 
 ## Version 2 - Supercharge your day with an efficient assistant seamlessly organizing your tasks
