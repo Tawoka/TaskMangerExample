@@ -8,11 +8,13 @@
     <version>3.2.1</version>
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
+
   <groupId>com.rmorgner</groupId>
   <artifactId>task-manager-example</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>TaskManagerExample</name>
   <description>Example project for spring based task manager</description>
+
   <properties>
     <java.version>17</java.version>
   </properties>
@@ -82,6 +84,7 @@
   </dependencies>
 
   <build>
+    <finalName>TaskManager</finalName>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
@@ -96,20 +99,13 @@
           <jvmArguments>-Dspring.application.admin.enabled=true</jvmArguments>
         </configuration>
         <executions>
-<!--          <execution>-->
-<!--            <id>run</id>-->
-<!--            <goals>-->
-<!--              <goal>start</goal>-->
-<!--              <goal>stop</goal>-->
-<!--            </goals>-->
-<!--          </execution>-->
           <execution>
             <id>build</id>
             <goals>
               <goal>repackage</goal>
             </goals>
             <configuration>
-              <classifier>spring-boot</classifier>
+              <classifier>executable</classifier>
               <mainClass>com.rmorgner.taskmanager.TaskManagerExampleApplication</mainClass>
             </configuration>
           </execution>

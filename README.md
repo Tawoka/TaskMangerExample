@@ -7,7 +7,7 @@ inside a docker container.
 
 ### Build the project
 
-TBD
+If you wish to rebuild the project, you can just run maven verify. There are no profiles or parameters to be set.
 
 ### Database
 
@@ -19,13 +19,35 @@ to the spring project. It has to be done separately.
 Inside *main/resources/application.properties*, update the URL to your docker container. If it is locally, use localhost.
 If you have changed any value inside the docker-compose, adjust it here too (i.e. port, username or password).
 
+You can either change this in the sources and rebuild the project, or go into the executable jar and change the values
+there.
+
 ### Starting the server
 
-TBD
+The jar-file *TaskManager-executable.jar* can be run from the terminal like this
+
+```shell
+java -jar [path to folder]/TaskManager-executable.jar
+```
 
 ### Open the web page
 
-TBD
+Once the server is started, it runs on port 8080 by default and serves the UI through your browser. You can most likely
+open it through the default localhost url: [http://localhost:8080](http://localhost:8080)
+
+If this doesn't work, make sure you have not changed the port or run the application on a named host. If so, adjust
+the URL accordingly.
+
+## Quick UI Guide
+
+The UI is very simple, and should require no explanation. Just in case, and to be thorough, I will provide a short guide.
+
+The UI enables you to create a simple ToDo List and persist it in a local database. You can create new Tasks, which will
+be created right away with default values. You can change the name of a task by clicking the edit button next to the 
+name. While editing, you can either save your current name, or revert to the old name. You can change the priority of a
+task. Tasks can be set to done by ticking the box, and deleted by pressing the delete button to the far right.
+
+Each task is either color coded based on its priority to identify it more quickly.
 
 ## Decisions Made
 
