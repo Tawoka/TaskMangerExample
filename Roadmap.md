@@ -16,6 +16,7 @@ Our new version comes with 2 EPICs:
 - Manage data prioritization and visibility
 
 For each epic we have identified a set of features we wish to accomplish:
+
 **EPIC: Enhance usability and practical value**
 - Adding Delete All
 - Adding new field "Finished By"
@@ -45,7 +46,7 @@ It is even better to organize your team! For this purpose we need to look toward
 solutions with our USP. We will carve out our own market share and grow our brand!
 
 While the road for this version is still foggy, we can clearly see on capability we must create: **Organize a teams work
-in a Task Manager both personal, and shared at the same time**
+for both the team as a whole, and its individual member**
 
 This capability requires 3 EPICs:
 - Create accounts to authenticate and authorize

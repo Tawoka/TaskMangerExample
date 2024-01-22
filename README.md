@@ -47,7 +47,7 @@ be created right away with default values. You can change the name of a task by 
 name. While editing, you can either save your current name, or revert to the old name. You can change the priority of a
 task. Tasks can be set to done by ticking the box, and deleted by pressing the delete button to the far right.
 
-Each task is either color coded based on its priority to identify it more quickly.
+Each task is color coded based on its priority to identify it more quickly.
 
 ## Decisions Made
 
@@ -90,3 +90,7 @@ the tests completed. It removes the need to rollback data after the tests.
 
 The test cases in both tests aren't exhaustive. This was purely done due to time restrictions, and because testing isn't
 the focus in this project.
+
+## Roadmap
+
+A [roadmap](/roadmap) has been added to create a showcase of how the future of such a tool can be planned out.
