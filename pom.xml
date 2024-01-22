@@ -96,11 +96,22 @@
           <jvmArguments>-Dspring.application.admin.enabled=true</jvmArguments>
         </configuration>
         <executions>
+<!--          <execution>-->
+<!--            <id>run</id>-->
+<!--            <goals>-->
+<!--              <goal>start</goal>-->
+<!--              <goal>stop</goal>-->
+<!--            </goals>-->
+<!--          </execution>-->
           <execution>
+            <id>build</id>
             <goals>
-              <goal>start</goal>
-              <goal>stop</goal>
+              <goal>repackage</goal>
             </goals>
+            <configuration>
+              <classifier>spring-boot</classifier>
+              <mainClass>com.rmorgner.taskmanager.TaskManagerExampleApplication</mainClass>
+            </configuration>
           </execution>
         </executions>
       </plugin>
